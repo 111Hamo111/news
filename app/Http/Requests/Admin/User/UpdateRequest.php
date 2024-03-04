@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Http\Requests\Admin\User;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        
+        return [
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email,' . $this->user->id,
+            // 'user_id' => 'required|integer|exists:users,id',
+            'role' => 'required|integer',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'name.required' => 'name not required',
+            'name.string' => 'name not string',
+            'email.required' => 'email not required',
+            'email.string' => 'email not string',
+            'email.email' => 'this is not email',
+            'email.unique' => 'this email already used',
+            'role.required' => 'role not required',
+            'role.integer' => 'role not integer',
+        ];
+    }
+}
